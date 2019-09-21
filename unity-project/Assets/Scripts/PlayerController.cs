@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private enum State
     {
         WaitingForPath,
+        WaitingToStart,
         Stopped,
         Running,
         Flying,
@@ -21,18 +22,19 @@ public class PlayerController : MonoBehaviour
     }
     
     public float speed = 1.0f;
+    public GameObject playerSkin;
 
     private LevelPath levelPath;
-    private Rigidbody playerRigidbody;
-    
+
     private float currentPositionInPath;
     private Vector3 playerHeight = new Vector3(0, 1.0f, 0);
+    private Animator animator;
 
     private State playerState;
 
     void Awake()
     {
-        playerRigidbody = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
         playerState = State.WaitingForPath;
     }
     
@@ -42,18 +44,21 @@ public class PlayerController : MonoBehaviour
         GameManager.instance.inputManager.RegisterTouchEnd(OnTouchEnd);
     }
 
+    public void StartRace()
+    {
+        playerState = State.Stopped;
+        animator.enabled = false;
+        SetInStartingPosition();
+    }
+    
     public void ResetPath(LevelPath newPath)
     {
         levelPath = newPath;
 
-        currentPositionInPath = 0;
-        playerRigidbody.Sleep();
-        transform.position = levelPath.GetWorldPosition(currentPositionInPath) + playerHeight;
-        transform.rotation = Quaternion.identity;
-        playerRigidbody.velocity = Vector3.zero;
-        playerRigidbody.angularVelocity = Vector3.zero;
-        playerRigidbody.WakeUp();
-        playerState = State.Stopped;
+        animator.enabled = false;
+        SetInStartingPosition();
+
+        playerState = State.WaitingToStart;
     }
     
     void Update()
@@ -65,8 +70,7 @@ public class PlayerController : MonoBehaviour
 
             if (currentPositionInPath >= levelPath.TotalDistance)
             {
-                GameManager.instance.EventManager.TriggerEvent(new PlayerFinishEvent{ player = this});
-                playerState = State.Finished;
+                Win();
             }
         }
         else if (playerState == State.Stopped)
@@ -101,11 +105,39 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Enemies"))
+        if (playerState == State.Running || playerState == State.Stopped)
         {
-            playerState = State.Flying;
+            if (other.gameObject.layer == LayerMask.NameToLayer("Enemies"))
+            {
+                playerState = State.Flying;
+                animator.enabled = true;
+                animator.Play("PlayerDie");
+            }
         }
+    }
+
+    private void SetInStartingPosition()
+    {
+        currentPositionInPath = 0;
+
+        playerSkin.transform.localRotation = Quaternion.identity;
+        playerSkin.transform.localPosition = Vector3.zero;
+        transform.position = levelPath.GetWorldPosition(currentPositionInPath) + playerHeight;
+    }
+
+    public void OnPlayerDied()
+    {
+        GetComponent<Animator>().enabled = false;
+        StartRace();
+    }
+
+    private void Win()
+    {
+        GameManager.instance.EventManager.TriggerEvent(new PlayerFinishEvent{ player = this});
+        animator.enabled = true;
+        animator.Play("PlayerWin");
+        playerState = State.Finished;
     }
 }
