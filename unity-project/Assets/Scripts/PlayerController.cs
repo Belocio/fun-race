@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
         if (playerState == State.Running)
         {
             currentPositionInPath += Time.deltaTime * speed;
-            transform.position = levelPath.GetWorldPosition(currentPositionInPath) + playerHeight;
+            levelPath.UpdateTransform(currentPositionInPath, playerHeight, transform);
 
             if (currentPositionInPath >= levelPath.TotalDistance)
             {
@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviour
 
         playerSkin.transform.localRotation = Quaternion.identity;
         playerSkin.transform.localPosition = Vector3.zero;
-        transform.position = levelPath.GetWorldPosition(currentPositionInPath) + playerHeight;
+        levelPath.UpdateTransform(currentPositionInPath, playerHeight, transform);
     }
 
     public void OnPlayerDied()

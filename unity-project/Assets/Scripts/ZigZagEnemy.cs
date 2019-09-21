@@ -29,7 +29,7 @@ public class ZigZagEnemy : MonoBehaviour
     {
         SetState(State.WaitingToMoveForward);
         startingPosition = transform.position;
-        finishingPosition = startingPosition + movementDirection * movementMagnitude;
+        finishingPosition = startingPosition + (transform.rotation * movementDirection) * movementMagnitude;
     }
     void Start()
     {

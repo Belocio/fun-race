@@ -18,7 +18,7 @@ public class FollowCamera : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        cameraTransform.position = target.position + offset;
+        cameraTransform.position = target.position + (target.rotation * offset);
         cameraTransform.LookAt(target);
     }
 }

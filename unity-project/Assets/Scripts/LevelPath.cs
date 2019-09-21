@@ -34,18 +34,22 @@ public class LevelPath : MonoBehaviour
         
     }
 
-    public Vector3 GetWorldPosition(float distanceToStart)
+    public void UpdateTransform(float distanceToStart, Vector3 displacement, Transform transformToUpdate)
     {
         int wayPointIndex = GetWaypointIndex(distanceToStart);
 
         if (wayPointIndex == wayPoints.Count - 1)
         {
-            return wayPoints[wayPoints.Count - 1].transform.position;
+            transformToUpdate.position = wayPoints[wayPoints.Count - 1].transform.position;
+            transformToUpdate.localRotation = wayPoints[wayPoints.Count - 1].transform.rotation;
+            return;
         }
         
         float t = (distanceToStart - wayPoints[wayPointIndex].distanceFromStart) / (wayPoints[wayPointIndex + 1].distanceFromStart - wayPoints[wayPointIndex].distanceFromStart);
-        return Vector3.Lerp(wayPoints[wayPointIndex].transform.position,
-            wayPoints[wayPointIndex + 1].transform.position, t);
+        transformToUpdate.position = Vector3.Lerp(wayPoints[wayPointIndex].transform.position,
+            wayPoints[wayPointIndex + 1].transform.position, t) + displacement;
+        transformToUpdate.localRotation = Quaternion.Slerp(wayPoints[wayPointIndex].transform.rotation,
+            wayPoints[wayPointIndex + 1].transform.rotation, t);
     } 
 
 
