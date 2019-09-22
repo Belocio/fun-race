@@ -12,10 +12,14 @@ I wasted more time than I would have liked with the collisions with the enemies.
 In general, I found myself slower than usual (modeling simple shapes with probuilder, navigating in the unity editor, doing animations, etc), as I didn't use Unity in months.
 
 ## Things to improve
-The look and feel:
+The look and feel of the game:
  - Transitions between game states. They are not smooth, and they lack some animations. I also wanted to implement a task scheduler which could also have helped with this, but I didn't have time to do it.
- - Readability of the code in the class LevelPath can be improved as well. I think by storing segments instead of points, the readability would improve significantly
  - The camera. I didn't spend time on it, and I just implemented the simplest camera to follow a target. I could have added some limits to the camera speed and rotation and the camera movements would look smoother.
+ - Art and animations. Didn't spend time on it. The look and feel of the game can be improved with some humanoid character, better animations and a better background and global illumination of the scene.
+ - Camera position, player speed, enemies behaviour can be improved by tweaking some values, so the player can have a better game experience.
+
+The code:
+- Readability of the code in the class LevelPath can be improved as well. I think by storing segments instead of points, the readability would improve significantly
  - The PlayerController reads the input and controls the object. These two concerns must be separated into different components if we want to implement ghosts.
  - I didn't have time to review the whole code, so there might be more things that can be improved and I'm missing here.
 
@@ -30,7 +34,7 @@ The look and feel:
 
 ## My opinion
 
-To be honest, I expected more from myself in this exercise. Even though I enjoyed doing it, I found myself slow using Unity. I notice the time without using it.
+To be honest, I expected more from myself in this exercise. Even though I enjoyed doing it, I found myself slow using Unity. I noticed the time without using it.
 
 As I mentioned before, there are a lot of things missing in the prototype and I would have liked to either be faster or have more time. I focused on the core gameplay and implementing, at least, one enemy, a level direction changes and a basic game loop. I didn't have time for anything else, so the graphics, transitions, animations are poor.
 
