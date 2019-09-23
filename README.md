@@ -39,3 +39,19 @@ To be honest, I expected more from myself in this exercise. Even though I enjoye
 As I mentioned before, there are a lot of things missing in the prototype and I would have liked to either be faster or have more time. I focused on the core gameplay and implementing, at least, one enemy, a level direction changes and a basic game loop. I didn't have time for anything else, so the graphics, transitions, animations are poor.
 
 Regarding the code, I didn't think about the scalability of it, I put myself in prototype mode and I wrote the simplest solutions for the problems I found.
+
+## The project
+
+The project has been developed using Unity 2018.3.14f1 and ProBuilder tool.
+
+It has only one scene that contains the whole game loop and some simple UI.
+
+In terms of code these are the main classes:
+ - **GameManager**: It's the manager of the game. It has a reference to all the elements of the game and it is responsible for controlling the main game loop.
+ - **EventManager**: Class to forward events to objects that are registered to them.
+ - **InputManager**: Controls the mouse input and forwards mouse events using the EventManager.
+ - **UIManager**: Attached to the Canvas, it controls the visibility of the main menu and winning screens.
+ - **PlayerController**: Class to control the player. It reads the mouse input and controls player movement and collisions.
+ - **LevelPath**: Represents the path the player must follow during the level. It gets all the waypoints at the start and provides a method to place a transform in a specific path point.
+ - **ZigZagEnemy**: The only enemy I implemented. This class controls the enemy movement.
+ - **FollowCamera**: Simple implementation for a camera to follow a target.
